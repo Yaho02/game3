@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class pika : MonoBehaviour
 {
-    public GameObject player1; // Player 1 오브젝트
-    public GameObject player2; // Player 2 오브젝트
+    public GameObject player1; // Player 1 오브젝트 (플레이어)
+    public GameObject player2; // Player 2 오브젝트 (AI)
     public GameObject ball;    // 공 오브젝트
     public GameObject net;     // 네트 오브젝트
     public Transform player1StartPos;
@@ -21,6 +21,13 @@ public class pika : MonoBehaviour
 
     public float playerSpeed = 7f;
     public float ballSpeed = 5f;
+    private float currentBallSpeed; // 현재 공 속도
+    private float speedIncreaseFactor = 0.2f; // 충돌할 때마다 속도 증가 비율
+
+    public float aiSpeed = 5f; // AI 이동 속도
+    public float aiJumpForce = 12f; // AI 점프 힘
+    private float lastJumpTime = 0f; // AI가 마지막으로 점프한 시간
+    public float jumpCooldown = 1f;  // AI가 점프할 수 있는 간격 (1초)
 
     public AudioSource hitSound;
     public AudioSource winSound;
@@ -31,7 +38,7 @@ public class pika : MonoBehaviour
 
     private bool gameEnded = false;
     private const float scoreThreshold = -4.2f; // 점수를 획득할 바닥 위치
-    private const int maxScore = 10; // 최대 점수
+    private const int maxScore = 50; // 최대 점수
     private bool scoreGiven = false; // 점수 획득 여부 확인
 
     void Start()
@@ -40,6 +47,9 @@ public class pika : MonoBehaviour
         player1Rb = player1.GetComponent<Rigidbody2D>();
         player2Rb = player2.GetComponent<Rigidbody2D>();
         ballRb = ball.GetComponent<Rigidbody2D>();
+
+        // 공의 현재 속도를 초기화
+        currentBallSpeed = ballSpeed;
 
         // 초기 위치 설정
         ResetPositions();
@@ -51,6 +61,7 @@ public class pika : MonoBehaviour
         if (!gameEnded)
         {
             PlayerMovement();
+            AIMovement(); // AI 움직임 처리
             CheckGameStatus();
         }
     }
@@ -75,24 +86,40 @@ public class pika : MonoBehaviour
         {
             player1Rb.velocity = new Vector2(player1Rb.velocity.x, 15f); // 점프
         }
+    }
 
-        // 플레이어 2 이동
-        if (Input.GetKey(KeyCode.LeftArrow))
+    void AIMovement()
+    {
+        float distanceToBallX = Mathf.Abs(ball.transform.position.x - player2.transform.position.x);
+        float distanceToBallY = ball.transform.position.y - player2.transform.position.y;
+
+        // 공이 AI 쪽으로 올 때 X 좌표를 맞춰서 이동
+        if (ball.transform.position.x > net.transform.position.x) // 공이 네트를 넘어 AI 쪽으로 올 때
         {
-            player2Rb.velocity = new Vector2(-playerSpeed, player2Rb.velocity.y);
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            player2Rb.velocity = new Vector2(playerSpeed, player2Rb.velocity.y);
+            // 공과 AI 사이의 X축 거리가 멀면 추적
+            if (distanceToBallX > 1.5f)
+            {
+                if (ball.transform.position.x > player2.transform.position.x)
+                {
+                    player2Rb.velocity = new Vector2(aiSpeed, player2Rb.velocity.y);
+                }
+                else if (ball.transform.position.x < player2.transform.position.x)
+                {
+                    player2Rb.velocity = new Vector2(-aiSpeed, player2Rb.velocity.y);
+                }
+            }
+
+            // 공이 AI의 근처에 올 때 점프, X축과 Y축 모두 고려
+            if (distanceToBallY > 1.0f && distanceToBallX < 3.0f && Time.time > lastJumpTime + jumpCooldown)
+            {
+                player2Rb.velocity = new Vector2(player2Rb.velocity.x, aiJumpForce); // AI가 점프
+                lastJumpTime = Time.time; // 마지막 점프 시간을 기록
+            }
         }
         else
         {
+            // 공이 네트 반대쪽으로 갈 때 AI는 움직이지 않음
             player2Rb.velocity = new Vector2(0, player2Rb.velocity.y);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            player2Rb.velocity = new Vector2(player2Rb.velocity.x, 15f); // 점프
         }
     }
 
@@ -142,8 +169,8 @@ public class pika : MonoBehaviour
     // 점수는 유지하면서 공과 플레이어의 위치를 초기화
     IEnumerator ResetGameWithDelay()
     {
-        // 약간의 딜레이 추가 (2초)
-        yield return new WaitForSeconds(2.0f);
+        // 점수를 준 후의 딜레이를 1초로 설정
+        yield return new WaitForSeconds(1.0f);
 
         ResetPositions(); // 공과 플레이어의 위치를 초기화
     }
@@ -161,12 +188,24 @@ public class pika : MonoBehaviour
         player2Rb.velocity = Vector2.zero;
 
         // 공의 초기 속도 설정 (속도도 초기화)
-        ballRb.AddForce(new Vector2(Random.Range(-1f, 1f), 1f) * ballSpeed, ForceMode2D.Impulse);
+        currentBallSpeed = ballSpeed; // 공 속도도 초기화
+        ballRb.AddForce(new Vector2(Random.Range(-1f, 1f), 1f) * currentBallSpeed, ForceMode2D.Impulse);
+    }
+
+    // 충돌할 때마다 속도를 증가시키는 함수
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        // 공이 네트, 벽, 또는 캐릭터와 충돌할 때 속도 증가
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Net"))
+        {
+            currentBallSpeed += speedIncreaseFactor; // 공의 속도 증가
+            ballRb.velocity = ballRb.velocity.normalized * currentBallSpeed; // 공 속도 업데이트
+        }
     }
 
     void UpdateScoreUI()
     {
-        player1ScoreText.text = "P1 score : " + player1Score.ToString();
-        player2ScoreText.text = "P2 score : " + player2Score.ToString();
+        player1ScoreText.text = player1Score.ToString();
+        player2ScoreText.text = player2Score.ToString();
     }
 }
