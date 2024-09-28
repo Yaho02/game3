@@ -18,24 +18,25 @@ public class dialog : MonoBehaviour
     [SerializeField] private Button agree_button;
 
     private bool isDialogue = false;
-    private int count = 0;
+    private int count = 1;
     
     [SerializeField] private Dialogue[] dialogue;
 
     public void ShowDialogue()
     {
-        ONOFF(true);//대화 시작
+        //ONOFF(true);//대화 시작
         NextDialogue();
     }
 
-    private void ONOFF(bool _flag)
-    {
-        sprite_DialogueBox.gameObject.SetActive(_flag);
-        sprite_StandingCG.gameObject.SetActive(_flag);
-        txt_Dialogue.gameObject.SetActive(_flag);
-        agree_button.gameObject.SetActive(_flag);
-        isDialogue = _flag;
-    }
+     ///private void ONOFF(bool _flag)
+    //{
+        //sprite_DialogueBox.gameObject.SetActive(_flag);
+        //sprite_StandingCG.gameObject.SetActive(_flag);
+        //txt_Dialogue.gameObject.SetActive(_flag);
+        //agree_button.gameObject.SetActive(_flag);
+        //isDialogue = _flag;
+    //}
+
     private void NextDialogue()
     {
         txt_Dialogue.text = dialogue[count].dialogue;
