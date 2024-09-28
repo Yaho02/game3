@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GoldAmount : MonoBehaviour
+public class HappinessAmount : MonoBehaviour
 {
-    public Text Gold;
-    public int gold;
+    public Text Happiness;
+    public int hap;
 
     // Start is called before the first frame update
     void Start()
@@ -17,7 +17,7 @@ public class GoldAmount : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        gold = FindObjectOfType<Gold_manager>().gold;
-        Gold.text = "" + gold;
+        hap = FindObjectOfType<HappinessManager>().happiness;
+        Happiness.text = "" + hap;
     }
 }
