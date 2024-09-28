@@ -12,7 +12,8 @@ public class Gold_manager : MonoBehaviour
 {
     static int gold;
     static int fee;
-    public Text Gold;
+    public Text Gold1;
+    public Text Gold2;
 
     // 의뢰 비용
     public void fee_amount()
@@ -28,33 +29,26 @@ public class Gold_manager : MonoBehaviour
         Debug.Log("획득된 gold: " + gold);
     }
 
+
     // Start is called before the first frame update
     void Start()
     {
         gold = 0;
         fee_amount();
 
-        // Gold가 에디터에서 제대로 할당되었는지 확인
-        if (Gold != null)
-        {
-            Debug.Log("Gold 텍스트 오브젝트가 정상적으로 할당되었습니다.");
-        }
-        else
-        {
-            Debug.LogError("Gold 텍스트 오브젝트가 할당되지 않았습니다!");
-        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Gold != null)
+        if (Gold1 != null)
         {
-            Gold.text = "GOLD : " + gold;
+            Gold1.text = "GOLD : " + gold;
+            Gold2.text =  fee + " 골드에 수락";
+
         }
-        else
-        {
-            Debug.LogError("Gold 텍스트가 null입니다. UI 텍스트가 할당되지 않았습니다.");
-        }
+        
+    
     }
 }
