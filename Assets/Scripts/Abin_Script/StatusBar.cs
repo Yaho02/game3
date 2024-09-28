@@ -5,14 +5,7 @@ using UnityEngine.UI;
 
 public class StatusBar : MonoBehaviour
 {
-   [SerializeField]
-    private Slider slTimer;
-
-    //public float MaxHp = 30;
-    //public float CurHp = 30;
-
-
-    //Slider slTimer;
+    public Slider slTimer;
     float fSliderBarTime;
     public int deletecount;
     void Start()
