@@ -903,7 +903,6 @@ GameObject:
   - component: {fileID: 1726491406}
   - component: {fileID: 1726491405}
   - component: {fileID: 1726491404}
-  - component: {fileID: 1726491407}
   m_Layer: 5
   m_Name: Start_Button
   m_TagString: Untagged
@@ -975,9 +974,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1726491407}
+      - m_Target: {fileID: 1726491402}
         m_TargetAssemblyTypeName: ChangeScence, Assembly-CSharp
-        m_MethodName: loading
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1025,19 +1024,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1726491402}
   m_CullTransparentMesh: 1
---- !u!114 &1726491407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1726491402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf7765a7ffca40f4e93103db12d27734, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stage: 4
 --- !u!1 &2022981769
 GameObject:
   m_ObjectHideFlags: 0
