@@ -29,7 +29,8 @@ public class pika : MonoBehaviour
     private float lastJumpTime = 0f; // AI가 마지막으로 점프한 시간
     public float jumpCooldown = 1f;  // AI가 점프할 수 있는 간격 (1초)
 
-    public AudioSource hitSound;
+    public AudioSource hitSound;  // 충돌 시 재생할 히트 사운드
+    public AudioSource jumpSound; // 점프 시 재생할 점프 사운드
     public AudioSource winSound;
 
     public UnityEngine.UI.Text player1ScoreText;
@@ -85,6 +86,7 @@ public class pika : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             player1Rb.velocity = new Vector2(player1Rb.velocity.x, 15f); // 점프
+            PlayJumpSound(); // 점프 사운드 재생
         }
     }
 
@@ -114,6 +116,7 @@ public class pika : MonoBehaviour
             {
                 player2Rb.velocity = new Vector2(player2Rb.velocity.x, aiJumpForce); // AI가 점프
                 lastJumpTime = Time.time; // 마지막 점프 시간을 기록
+                PlayJumpSound();
             }
         }
         else
@@ -195,17 +198,37 @@ public class pika : MonoBehaviour
     // 충돌할 때마다 속도를 증가시키는 함수
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // 공이 네트, 벽, 또는 캐릭터와 충돌할 때 속도 증가
+        Debug.Log("Collision detected with: " + collision.gameObject.name);  // 충돌 로그 확인
+
+        // 공이 네트, 벽, 또는 캐릭터와 충돌할 때 속도 증가 및 히트 사운드 재생
         if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Net"))
         {
             currentBallSpeed += speedIncreaseFactor; // 공의 속도 증가
             ballRb.velocity = ballRb.velocity.normalized * currentBallSpeed; // 공 속도 업데이트
+
+            PlayHitSound(); // 히트 사운드 재생
         }
     }
-
     void UpdateScoreUI()
     {
         player1ScoreText.text = player1Score.ToString();
         player2ScoreText.text = player2Score.ToString();
+    }
+
+    // 히트 사운드 재생 함수
+    void PlayHitSound()
+    {
+        if (ball.transform.position.y < scoreThreshold || ball.transform.position.y >500||ball.transform.position.x < -909 || ball.transform.position.x >916)
+        {
+            hitSound.Play();
+        }
+    }
+    // 점프 사운드 재생 함수
+    void PlayJumpSound()
+    {
+        if (jumpSound != null)
+        {
+            jumpSound.Play();
+        }
     }
 }
