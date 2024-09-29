@@ -5,19 +5,19 @@ using UnityEngine;
 public class HappinessManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    public int happiness;
+    public int happiness = 0;
     void Start()
     {
-        happiness = 1000;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //happiness += 100;
     }
 
-    public void AddHappiness(int amount)
+    /*public void AddHappiness(int amount)
     {
         happiness += amount;
     }
@@ -25,5 +25,16 @@ public class HappinessManager : MonoBehaviour
     public int GetAmount()
     {
         return happiness;
+    }*/
+    
+    public void RightMeal()
+    {
+        happiness += 100;
+        Debug.Log("증가");
+    }
+
+    public void WrongMeal()
+    {
+        happiness -= 100;
     }
 }

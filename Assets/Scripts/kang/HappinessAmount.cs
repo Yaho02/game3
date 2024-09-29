@@ -7,6 +7,7 @@ public class HappinessAmount : MonoBehaviour
 {
     public Text Happiness;
     public int hap;
+    public GameObject ob;
 
     // Start is called before the first frame update
     void Start()
@@ -17,7 +18,7 @@ public class HappinessAmount : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        hap = FindObjectOfType<HappinessManager>().happiness;
+        hap = ob.GetComponent<HappinessManager>().happiness;
         Happiness.text = "" + hap;
     }
 }

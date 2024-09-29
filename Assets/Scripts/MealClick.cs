@@ -1,14 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class GoldAmount : MonoBehaviour
+public class MealClick : MonoBehaviour
 {
-    public Text Gold;
-    public int gold;
-    public GameObject ob;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +13,6 @@ public class GoldAmount : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        gold = ob.GetComponent<Gold_manager>().gold;
-        Gold.text = "" + gold;
+        
     }
 }

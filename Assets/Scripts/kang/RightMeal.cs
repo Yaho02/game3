@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class RightMeal : MonoBehaviour
 {
+    public GameObject ob;
+    //Text text;
+
     // Start is called before the first frame update
-    void rightMeal()
+    void Start()
     {
-        FindObjectOfType<HappinessManager>().AddHappiness(100);
+
+    }
+
+    void Update()
+    {
+        if(Input.GetMouseButtonDown(0))
+            ob.GetComponent<HappinessManager>().happiness += 100;
+            Debug.Log(ob.GetComponent<HappinessManager>().happiness);
     }
 }
