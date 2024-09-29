@@ -232,6 +232,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c16c5484469f5e48a3ec7cdeb96167f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gold: 0
+  fee: 0
   Gold1: {fileID: 1056905023}
   Gold2: {fileID: 753767086}
 --- !u!4 &206760262
@@ -640,6 +642,7 @@ GameObject:
   - component: {fileID: 977761502}
   - component: {fileID: 977761501}
   - component: {fileID: 977761504}
+  - component: {fileID: 977761505}
   m_Layer: 5
   m_Name: agree_button
   m_TagString: Untagged
@@ -724,6 +727,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 977761505}
+        m_TargetAssemblyTypeName: ChangeScence, Assembly-CSharp
+        m_MethodName: loading
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &977761502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -774,8 +789,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c16c5484469f5e48a3ec7cdeb96167f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gold: 0
+  fee: 0
   Gold1: {fileID: 0}
   Gold2: {fileID: 0}
+--- !u!114 &977761505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977761499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf7765a7ffca40f4e93103db12d27734, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stage: 1
 --- !u!1 &1056905022
 GameObject:
   m_ObjectHideFlags: 0
